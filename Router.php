@@ -27,9 +27,11 @@ class Router{
 
         // $auth = $_SESSION['login'] ?? null;
 
-
-        $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
-
+        if ($_SERVER['PATH_INFO']) {
+            $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
+        } else {
+            $currentUrl = $_SERVER['REQUEST_URI'] === '' ? '/' : $_SERVER['REQUEST_URI']; //Nos trae la URL de la Pagina si esta vacia que lo traslade a la principal sino que lo mantenga en esa URL
+        }
         
         $method = $_SERVER['REQUEST_METHOD'];
 
