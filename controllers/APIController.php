@@ -14,7 +14,7 @@ class APIController{
     public static function index(){
         $servicios = Servicio::all();
 
-        echo json_encode($servicios); //Mostramos en la URL /api/servicios los servicios como archivo .json
+        echo json_encode($servicios, JSON_UNESCAPED_UNICODE); //Mostramos en la URL /api/servicios los servicios como archivo .json
     }
 
 
