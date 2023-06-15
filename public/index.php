@@ -20,7 +20,6 @@ $router->post('/',[LoginController::class, 'login']);
 $router->get('/logout',[LoginController::class, 'logout']);
 
 //Recuperar Password
-
 $router->get('/olvide',[LoginController::class, 'olvide']);
 $router->post('/olvide',[LoginController::class, 'olvide']);
 
@@ -33,16 +32,7 @@ $router->get('/crear-cuenta',[LoginController::class, 'crear']);
 $router->post('/crear-cuenta',[LoginController::class, 'crear']);
 
 //Confirmar Cuenta
-if (isset($_GET["token"])) {
-    $token = $_GET["token"];
-    $router->get("/confirmar-cuenta?token=$token", [LoginController::class, "confirmar"]);
-    $router->post("/confirmar-cuenta?token=$token", [LoginController::class, "confirmar"]);
-}else{
-    $router->get("/confirmar-cuenta", [LoginController::class, "confirmar"]);
-    $router->post("/confirmar-cuenta", [LoginController::class, "confirmar"]);
-}
-// $router->get('/confirmar-cuenta',[LoginController::class, 'confirmar']);
-
+$router->get('/confirmar-cuenta',[LoginController::class, 'confirmar']);
 $router->get('/mensaje',[LoginController::class, 'mensaje']);
 
 /********* Area Privada *********/

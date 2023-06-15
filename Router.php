@@ -2,23 +2,27 @@
 
 namespace MVC;
 
-class Router{
+class Router
+{
 
     public array $getRoutes = [];
     public array $postRoutes = [];
 
-    public function get($url, $fn){
+    public function get($url, $fn)
+    {
 
         $this->getRoutes[$url] = $fn;
     }
 
-    public function post($url, $fn){
+    public function post($url, $fn)
+    {
         $this->postRoutes[$url] = $fn;
     }
 
     //Identificacion del URL
-    public function comprobarRutas(){
-        
+    public function comprobarRutas()
+    {
+
         // Proteger Rutas...
         session_start();
 
@@ -27,20 +31,18 @@ class Router{
 
         // $auth = $_SESSION['login'] ?? null;
 
-        if ($_SERVER['PATH_INFO']) {
-            $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
-        } else {
-            $currentUrl = $_SERVER['REQUEST_URI'] === '' ? '/' : $_SERVER['REQUEST_URI']; //Nos trae la URL de la Pagina si esta vacia que lo traslade a la principal sino que lo mantenga en esa URL
-        }
-        
+        $currentUrl = ($_SERVER['REQUEST_URI'] === '') ? '/' :  $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
 
-        if ($method === 'GET') {
-            $fn = $this->getRoutes[$currentUrl] ?? null;
-        } else {
-            $fn = $this->postRoutes[$currentUrl] ?? null;
-        }
+        //dividimos la URL actual cada vez que exista un '?' eso indica que se están pasando variables por la url
+        $splitURL = explode('?', $currentUrl);
+        // debuguear($splitURL);
 
+        if ($method === 'GET') {
+            $fn = $this->getRoutes[$splitURL[0]] ?? null; //$splitURL[0] contiene la URL sin variables 
+        } else {
+            $fn = $this->postRoutes[$splitURL[0]] ?? null;
+        }
 
         if ($fn) {
             // Call user fn va a llamar una función cuando no sabemos cual sera
@@ -50,7 +52,8 @@ class Router{
         }
     }
 
-    public function render($view, $datos = []){
+    public function render($view, $datos = [])
+    {
 
         // Leer lo que le pasamos  a la vista
         foreach ($datos as $key => $value) {
@@ -63,8 +66,7 @@ class Router{
         include_once __DIR__ . "/views/$view.php";
 
         $contenido = ob_get_clean(); // Limpia el Buffer
-        
+
         include_once __DIR__ . '/views/layout.php';
     }
-
 }
