@@ -83,7 +83,7 @@ class Email
         $contenido = '<html>';
         $contenido .= '<p>Confirma Tu Cuenta Ahora</p>';
         $contenido .= "<p><strong>Hola ". $this->nombre ."</strong> Has Solicitado Reestablecer Tu Contraseña usa el siguiente Enlace para Reestablecerla</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://127.0.0.1:3000/recuperar?token=" . $this->token . "'>Reestablecer Contraseña</a></p>";
+        $contenido .= "<p>Presiona aquí: <a href='https://aaron-lescano-ejercicio.herokuapp.com/recuperar?token=" . $this->token . "'>Reestablecer Contraseña</a></p>";
         $contenido .= "<p>Si tu no solicitaste Reestablecer tu Constraseña Ignora este Mensaje</p>";
         $contenido .= "</html>";
      
