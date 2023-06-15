@@ -50,7 +50,7 @@ class APIController{
         ];
 
 
-        echo json_encode($respuesta);
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
     
     }
 
