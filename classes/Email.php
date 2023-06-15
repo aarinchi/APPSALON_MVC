@@ -45,7 +45,7 @@ class Email
         $contenido = '<html>';
         $contenido .= '<p>Confirma Tu Cuenta Ahora</p>';
         $contenido .= "<p><strong>Hola ". $this->nombre ."</strong> Has creado tu Cuenta en Nuestra App, Solo debes Confirmarla Presionando el Siguiente Enlace</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://127.0.0.1:3000/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a></p>";
+        $contenido .= "<p>Presiona aquí: <a href='https://aaron-lescano-ejercicio.herokuapp.com/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a></p>";
         $contenido .= "<p>Si tu no solicitaste Crear esta Cuenta Ignora este Mensaje</p>";
         $contenido .= "</html>";
 
