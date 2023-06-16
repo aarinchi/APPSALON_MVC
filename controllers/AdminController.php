@@ -35,7 +35,7 @@ class AdminController{
         $consulta .= " LEFT OUTER JOIN citasservicios ";
         $consulta .= " ON citasservicios.citaId = citas.id ";
         $consulta .= " LEFT OUTER JOIN servicios ";
-        $consulta .= " ON servicios.id = citasservicios.serviciosId ";
+        $consulta .= " ON servicios.id = citasservicios.servicioId ";
         $consulta .= " WHERE fecha =  '$fecha' ";
 
         //Realiza la Consulta a la BD y nos trae el Resultado (Todas las Citas que Tenemos en la BD)

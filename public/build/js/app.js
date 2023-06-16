@@ -418,7 +418,7 @@ async function reservarCita() {
     datos.append('usuarioId', id);
     datos.append('fecha', fecha);
     datos.append('hora', hora);
-    datos.append('serviciosId', idServicios);
+    datos.append('servicioId', idServicios);
 
     console.log([...datos]);
 

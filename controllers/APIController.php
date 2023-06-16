@@ -31,13 +31,13 @@ class APIController{
 
         // Almacen la cita y el servicio
 
-        $idServicios = explode(",", $_POST['serviciosId']);
+        $idServicios = explode(",", $_POST['servicioId']);
 
         foreach($idServicios as $idServicio) {
 
             $args = [
                 'citaId' => $id,
-                'serviciosId' => $idServicio
+                'servicioId' => $idServicio
             ];
 
             $citaServicio = new CitaServicio($args);

@@ -6,7 +6,7 @@ class CitaServicio extends ActiveRecord{
         
     //Base de Datos     
     protected static $tabla = 'citasservicios';
-    protected static $columnasDB = ['id', 'citaId', 'serviciosId'];
+    protected static $columnasDB = ['id', 'citaId', 'servicioId'];
 
     public $id;
     public $citaId;
@@ -15,7 +15,7 @@ class CitaServicio extends ActiveRecord{
     public function __construct($args = []){
         $this->id = $args['id']  ?? null;
         $this->citaId = $args['citaId'] ?? '';
-        $this->serviciosId = $args['serviciosId'] ?? '';
+        $this->serviciosId = $args['servicioId'] ?? '';
     }
 
 }
