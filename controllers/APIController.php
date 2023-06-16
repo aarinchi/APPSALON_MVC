@@ -34,7 +34,7 @@ class APIController{
 
         $idServicios = explode(",", $_POST['servicioId']);
 
-        debuguear($idServicios);
+        echo($idServicios);
 
         foreach($idServicios as $idServicio) {
 
