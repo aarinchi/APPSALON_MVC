@@ -413,58 +413,53 @@ function mostrarResumen(){
 //Conectamos con el Servidor por API y Fecth
 async function reservarCita() {
     
-    const { nombre, fecha, hora, servicios, id} = cita;
+    const { nombre, fecha, hora, servicios, id } = cita;
 
-    // const idServicios = servicios.map( servicio => servicio.id );
+    const idServicios = servicios.map( servicio => servicio.id );
     // console.log(idServicios);
 
     const datos = new FormData();
     
     datos.append('fecha', fecha);
-    datos.append('hora', hora);
+    datos.append('hora', hora );
     datos.append('usuarioId', id);
-    // datos.append('servicios', idServicios);
+    datos.append('servicios', idServicios);
 
+    // console.log([...datos]);
 
-    // try {
+    try {
         // Petición hacia la api
-        const url = "https://aaron-lescano-ejercicio.herokuapp.com/api/citas";
-
-        
-
+        const url = `${location.origin}/api/citas`;
         const respuesta = await fetch(url, {
             method: 'POST',
             body: datos
         });
+
+        const resultado = await respuesta.json();
+        // console.log(resultado);
         
-
-    //     const resultado = await respuesta.json();
-
-        
-    //     if(resultado.resultado) {
-    //         Swal.fire({
-    //             icon: 'success',
-    //             title: 'Cita Creada',
-    //             text: 'Tu cita fue creada correctamente',
-    //             button: 'OK'
-    //         }).then( () => {
-    //             setTimeout(() => {
-    //                 window.location.reload();
-    //             }, 3000);
-    //         })
-    //     }
-
-    // } catch (error) {
-    //     console.log(error);
-    //     Swal.fire({
-    //         icon: 'error',
-    //         title: 'Error',
-    //         text: 'Hubo un error al guardar la cita'
-    //     })
-    // }
+        if(resultado.resultado) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Cita Creada',
+                text: 'Tu cita fue creada correctamente',
+                button: 'OK'
+            }).then( () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            })
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al guardar la cita'
+        })
+    }
 
     
-    // // console.log([...datos]);
+    // console.log([...datos]);
 
 }
 
