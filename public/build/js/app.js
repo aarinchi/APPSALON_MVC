@@ -410,33 +410,29 @@ function mostrarResumen(){
 
 }
 
-//Conectamos con el Servidor por API y Fecth
 async function reservarCita() {
-    
-    const { nombre, fecha, hora, servicios, id } = cita;
-
-    const idServicios = servicios.map( servicio => servicio.id );
-    // console.log(idServicios);
-
+    const { id, fecha, hora, servicios } = cita;
+    const idServicios = servicios.map(servicio => servicio.id);
     const datos = new FormData();
-    
-    datos.append('fecha', fecha);
-    datos.append('hora', hora );
-    datos.append('usuarioId', id);
-    datos.append('servicios', idServicios);
 
-    // console.log([...datos]);
+    datos.append('usuarioId', id);
+    datos.append('fecha', fecha);
+    datos.append('hora', hora);
+    datos.append('serviciosId', idServicios);
+
+    console.log([...datos]);
 
     try {
-        // Petición hacia la api
+        // Peticion hacia la API
         const url = `${location.origin}/api/citas`;
+
         const respuesta = await fetch(url, {
             method: 'POST',
             body: datos
         });
-
+    
         const resultado = await respuesta.json();
-        // console.log(resultado);
+
         
         if(resultado.resultado) {
             Swal.fire({
@@ -451,6 +447,7 @@ async function reservarCita() {
             })
         }
     } catch (error) {
+        console.log(error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -462,4 +459,49 @@ async function reservarCita() {
     // console.log([...datos]);
 
 }
+
+
+// async function reservarCita() {
+//     const { id, fecha, hora, servicios } = cita;
+//     const idServicios = servicios.map(servicio => servicio.id);
+//     const datos = new FormData();
+
+//     datos.append('usuarioId', id);
+//     datos.append('fecha', fecha);
+//     datos.append('hora', hora);
+//     datos.append('servicios', idServicios);
+
+//     console.log(datos);
+
+//     try {
+//         // Peticion hacia la API
+//         const url = `${location.origin}/api/citas`;
+//         const respuesta = await fetch(url, {
+//             method: 'POST',
+//             body: datos
+//         });
+
+//         const resultado = await respuesta.json();
+//         console.log(resultado);
+
+//         exito();
+
+//     } catch (error) {
+//         Toast.fire({
+//             icon: 'error',
+//             title: 'Oops! Ocurrio un error al guardar la cita.'
+//         })
+//     }
+
+//     //console.log([...datos]);
+// }
+// function exito() {
+
+//     Toast.fire({
+//         icon: 'success',
+//         title: 'La cita fue creada correctamente.'
+//     }).then(() => {
+//         window.location.reload();
+//     })
+// }
 
