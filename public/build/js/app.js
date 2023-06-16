@@ -430,13 +430,14 @@ async function reservarCita() {
     try {
         // Petición hacia la api
         const url = `${location.origin}/api/citas`;
+
         const respuesta = await fetch(url, {
             method: 'POST',
             body: datos
         });
 
         const resultado = await respuesta.json();
-        console.log(resultado);
+
         
         if(resultado.resultado) {
             Swal.fire({
