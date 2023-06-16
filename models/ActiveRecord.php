@@ -172,6 +172,7 @@ class ActiveRecord {
 
         // Resultado de la consulta
         $resultado = self::$db->query($query); //Retorna True o False
+
         
         return [
            'query' => $query,

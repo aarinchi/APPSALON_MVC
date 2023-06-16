@@ -20,42 +20,33 @@ class APIController{
 
 
     //Guardamos los Datos del Usuario de JavaScript a PHP mediante API http://127.0.0.1:3000/api/citas
-    public static function guardar(){
-        
-        //Almacena la Cita y devuelve el Id
+    public static function guardar() {
+
+        // Almacena la cita y devuelve el id
         $cita = new Cita($_POST);
+        
+        $resultado = $cita->guardar();
+        $id = $resultado['id'];
 
-        debuguear($cita);
 
-        $resultado = $cita->guardar(); //Este resultado tiene el Id de la Cita 
+        // Almacen la cita y el servicio
 
-        $id = $resultado['id']; //Obtenemos el Id de la Cita 
+        $idServicios = explode(",", $_POST['serviciosId']);
 
-        //Almacena la Cita y el Servicio en la Tabla CitaServicios
+        foreach($idServicios as $idServicio) {
 
-        $servicios = $_POST['servicios'];
-
-        $idServicios = explode(",", $servicios); //Separamos los servicios que nos trajimos del API que esta en String a Arreglo
-
-        //Almacena los Servicios Con el Id de la Cita
-        foreach($idServicios as $idServicio){ //Para no cometer un error en normalizacion creamos por cada servicio de la cita una columna nueva es decir si tiene 1,2,3 servicios son 3 columnas en la BD
             $args = [
                 'citaId' => $id,
                 'serviciosId' => $idServicio
             ];
 
             $citaServicio = new CitaServicio($args);
+            
             $citaServicio->guardar();
+          
         }
 
-        //Retornamos una Respuesta en Nuestra API
-        $respuesta = [
-            'resultado' => $resultado //Accedemos en el servidor al valor de los servicios 
-        ];
-
-
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-    
+        echo json_encode(['resultado' => $resultado]);
     }
 
     // "api/eliminar"
