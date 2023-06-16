@@ -336,11 +336,12 @@ async function reservarCita() {
     datos.append('hora', hora);
     datos.append('servicios', idServicios);
 
-    console.log(datos);
+    console.log([...datos]);
 
     try {
         // Peticion hacia la API
         const url = `${location.origin}/api/citas`;
+        console.log(url);
         const respuesta = await fetch(url, {
             method: 'POST',
             body: datos
