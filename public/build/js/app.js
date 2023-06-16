@@ -437,7 +437,7 @@ async function reservarCita() {
             body: datos
         });
         
-        console.log(datos);
+
         const resultado = await respuesta.json();
 
         
