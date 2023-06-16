@@ -352,7 +352,7 @@ async function reservarCita() {
         exito();
 
     } catch (error) {
-        console.log("Error");
+        console.log(error);
     }
 
     //console.log([...datos]);
