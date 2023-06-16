@@ -23,7 +23,8 @@ class APIController{
     public static function guardar() {
       
         // Almacena la cita y devuelve el id
-        $cita = new Cita($_POST);
+        $cita = new Cita();
+        $cita->sincronizar($_POST);
         
         $resultado = $cita->guardar();
         // $id = $resultado['id'];
@@ -52,7 +53,7 @@ class APIController{
             'servicios' => $resultado
         ];
 
-        echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
     }
 
     // "api/eliminar"
