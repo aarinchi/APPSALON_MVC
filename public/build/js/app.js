@@ -426,9 +426,9 @@ async function reservarCita() {
     datos.append('servicios', idServicios);
 
 
-    try {
+    // try {
         // Petición hacia la api
-        const url = `https://aaron-lescano-ejercicio.herokuapp.com/api/citas`;
+        const url = "https://aaron-lescano-ejercicio.herokuapp.com/api/citas";
 
         
 
@@ -438,33 +438,33 @@ async function reservarCita() {
         });
         
 
-        const resultado = await respuesta.json();
+    //     const resultado = await respuesta.json();
 
         
-        if(resultado.resultado) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Cita Creada',
-                text: 'Tu cita fue creada correctamente',
-                button: 'OK'
-            }).then( () => {
-                setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
-            })
-        }
+    //     if(resultado.resultado) {
+    //         Swal.fire({
+    //             icon: 'success',
+    //             title: 'Cita Creada',
+    //             text: 'Tu cita fue creada correctamente',
+    //             button: 'OK'
+    //         }).then( () => {
+    //             setTimeout(() => {
+    //                 window.location.reload();
+    //             }, 3000);
+    //         })
+    //     }
 
-    } catch (error) {
-        console.log(error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un error al guardar la cita'
-        })
-    }
+    // } catch (error) {
+    //     console.log(error);
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'Error',
+    //         text: 'Hubo un error al guardar la cita'
+    //     })
+    // }
 
     
-    // console.log([...datos]);
+    // // console.log([...datos]);
 
 }
 
