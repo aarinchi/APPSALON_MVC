@@ -1,1 +1,465 @@
-let paso=1;const pasoInicial=1,pasoFinal=3,cita={id:"",nombre:"",fecha:"",hora:"",servicios:[]};function iniciarApp(){mostrarSeccion(),tabs(),botonesPaginador(),paginaSiguiente(),paginaAnterior(),consultarAPI(),idCliente(),nombreCliente(),seleccionarFecha(),seleccionarHora(),mostrarResumen()}function mostrarSeccion(){const e=document.querySelector(".mostrar");e&&e.classList.remove("mostrar");const t="#paso-"+paso;document.querySelector(t).classList.add("mostrar");const o=document.querySelector(".actual");o&&o.classList.remove("actual");document.querySelector(`[data-paso="${paso}"]`).classList.add("actual")}function tabs(){document.querySelectorAll(".tabs button").forEach(e=>{e.addEventListener("click",(function(e){paso=parseInt(e.target.dataset.paso),mostrarSeccion(),botonesPaginador()}))})}function botonesPaginador(){const e=document.querySelector("#anterior"),t=document.querySelector("#siguiente");1===paso?(e.classList.add("ocultar"),t.classList.remove("ocultar")):3===paso?(e.classList.remove("ocultar"),t.classList.add("ocultar"),mostrarResumen()):(t.classList.remove("ocultar"),e.classList.remove("ocultar"))}function paginaSiguiente(){document.querySelector("#siguiente").addEventListener("click",(function(e){paso>=3||(paso+=1,botonesPaginador(),mostrarSeccion())}))}function paginaAnterior(){document.querySelector("#anterior").addEventListener("click",(function(e){paso<=1||(paso-=1,botonesPaginador(),mostrarSeccion())}))}async function consultarAPI(){try{const e=location.origin+"/api/servicios",t=await fetch(e);mostrarServicios(await t.json())}catch(e){console.log(e)}}function mostrarServicios(e){e.forEach(e=>{const{id:t,nombre:o,precio:n}=e,a=document.createElement("P");a.classList.add("nombre-servicio"),a.textContent=o;const c=document.createElement("P");c.classList.add("precio-servicio"),c.textContent="$"+n;const r=document.createElement("DIV");r.classList.add("servicio"),r.dataset.idServicio=t,r.onclick=function(){seleccionarServicio(e)},r.appendChild(a),r.appendChild(c),document.querySelector("#servicios").appendChild(r)})}function seleccionarServicio(e){const{id:t}=e,{servicios:o}=cita,n=document.querySelector(`[data-id-servicio = "${e.id}"]`);o.some(t=>t.id===e.id)?(cita.servicios=o.filter(t=>t.id!=e.id),n.classList.remove("seleccionado")):(cita.servicios=[...o,e],n.classList.add("seleccionado"))}function nombreCliente(){const e=document.querySelector("#nombre").value;cita.nombre=e}function idCliente(){const e=document.querySelector("#id").value;cita.id=e}function seleccionarFecha(){document.querySelector("#fecha").addEventListener("input",(function(e){const t=new Date(e.target.value).getUTCDay();[6,0].includes(t)?(e.target.value="",mostrarAlerta("Fines de Semana NO Permitido","error","#paso-2 p")):cita.fecha=e.target.value}))}function seleccionarHora(){document.querySelector("#hora").addEventListener("input",(function(e){const t=e.target.value.split(":");seleccion_only_hora_cita=parseInt(t[0]),seleccion_only_hora_cita<8||seleccion_only_hora_cita>18?(e.target.value="",mostrarAlerta("Seleccionaste una Hora Incorrecta","error","#paso-2 p")):cita.hora=e.target.value}))}function mostrarAlerta(e,t,o,n=!0){const a=document.querySelector(".alerta");a&&a.remove();const c=document.createElement("DIV");c.textContent=e,c.classList.add("alerta"),c.classList.add(t);document.querySelector(o).appendChild(c),1==n&&setTimeout(()=>{c.remove()},4e3)}function mostrarResumen(){const e=document.querySelector(".contenido-resumen"),t=document.createElement("DIV");for(t.classList.add("contenedor-servicios");e.firstChild;)e.removeChild(e.firstChild);if(Object.values(cita).includes("")||0===cita.servicios.length)return void mostrarAlerta("Existe un Error te Faltan Datos por Llenar","error",".contenido-resumen",!1);const{nombre:o,fecha:n,hora:a,servicios:c}=cita,r=document.createElement("H3");r.textContent="Resumen de Cita";const i=document.createElement("DIV");i.classList.add("informacion-cita");const s=document.createElement("P");s.innerHTML="<span>Nombre:</span> "+o;const d=new Date(n),l=d.getMonth(),u=d.getDate()+2,m=d.getFullYear(),p=new Date(Date.UTC(m,l,u)).toLocaleDateString("es-Mx",{weekday:"long",year:"numeric",month:"long",day:"numeric"}),v=document.createElement("P");v.innerHTML="<span>Fecha:</span> "+p;const h=document.createElement("P");h.innerHTML=`<span>Hora:</span> ${a} Horas`;const f=document.createElement("H3");f.textContent="Resumen de Servicios",c.forEach(e=>{const{id:o,precio:n,nombre:a}=e,c=document.createElement("DIV");c.classList.add("contenedor-servicio");const r=document.createElement("P");r.textContent=a;const i=document.createElement("P");i.innerHTML="<span>Precio: </span> $"+n,c.appendChild(r),c.appendChild(i),t.appendChild(c)});const C=document.createElement("BUTTON");C.classList.add("boton"),C.classList.add("btn-restablecer"),C.textContent="Reservar Cita",C.onclick=reservarCita,e.appendChild(r),i.appendChild(s),i.appendChild(v),i.appendChild(h),e.appendChild(i),e.appendChild(f),e.appendChild(t),e.appendChild(C)}async function reservarCita(){const{nombre:e,fecha:t,hora:o,servicios:n,id:a}=cita,c=n.map(e=>e.id),r=new FormData;r.append("fecha",t),r.append("hora",o),r.append("usuarioId",a),r.append("servicios",c);try{const e=location.origin+"/api/citas",t=await fetch(e,{method:"POST",body:r}),o=await t.json();console.log(o),o.resultado&&Swal.fire({icon:"success",title:"Cita Creada",text:"Tu cita fue creada correctamente",button:"OK"}).then(()=>{setTimeout(()=>{window.location.reload()},3e3)})}catch(e){Swal.fire({icon:"error",title:"Error",text:"Hubo un error al guardar la cita"})}}document.addEventListener("DOMContentLoaded",(function(){iniciarApp()}));
+
+let paso = 1; //Le ponemos let=1 porque este va a cambiar y escogemos el primero por el que empieza 
+const pasoInicial = 1;
+const pasoFinal = 3;
+
+
+/** OBJETO DE CITA **/ 
+const cita = {
+    id: '',
+    nombre: '',
+    fecha: '',
+    hora: '',
+    servicios: []
+}
+ 
+document.addEventListener('DOMContentLoaded',function(){ //DOMContentLoaded = Cuando la carga del contenido del DOM haya completado
+
+    iniciarApp();
+
+}); 
+
+
+/*********** FUNCION PRINCIPAL **********/ 
+function iniciarApp(){
+
+    mostrarSeccion();   //Muestra y oculta las secciones
+    tabs();             //Cambia la seccion cuando se presionen los tabs 
+    botonesPaginador(); //Agrega o quita los botones del paginador 
+    paginaSiguiente();
+    paginaAnterior();
+
+    consultarAPI(); //Consulta la API en el backed de PHP
+
+    idCliente();
+    nombreCliente(); //Consulta el Nombre del Cliente y lo añade a la Cita
+    seleccionarFecha(); //Añade una Fecha al Objeto Cita 
+    seleccionarHora(); //Añade la Hora al Objeto de Cita
+
+    mostrarResumen(); //Muestra el Resumen de la Cita
+
+}
+
+/**** MUESTRA LA SECCION QUE REQUIRAMOS *****/
+function mostrarSeccion(){
+
+    //Quitar el Mostrar que hayan anteriormente
+    const seccionAnterior = document.querySelector('.mostrar');
+
+    if(seccionAnterior){
+        seccionAnterior.classList.remove('mostrar');
+    }
+    
+    //Seleccionar la seccion 
+    const pasoSelector = `#paso-${paso}`;
+    const seccion = document.querySelector(pasoSelector);
+
+    //Mostrar la seccion que se dio click
+    seccion.classList.add('mostrar');
+
+    const tabActual = document.querySelector('.actual');
+
+    if(tabActual){
+        tabActual.classList.remove('actual');
+    }
+
+    //Resalta el Tab actual
+    const tab = document.querySelector(`[data-paso="${paso}"]`);
+    tab.classList.add('actual');
+    
+
+}
+
+/**** CAMBIA LA SECCION CUANDO SE PRESIONEN LOS TABS *****/
+function tabs(){
+    const botones = document.querySelectorAll('.tabs button'); //Botones es un NodeList algo parecido a un Arreglo
+
+    botones.forEach( (boton) => {
+
+        boton.addEventListener('click',function(e){
+
+            //Boton al que le doy click //Paso de los Tabs definido por dataset
+            paso = parseInt(e.target.dataset.paso)//Traemos todos los Eventos Disponibles para cada Boton
+            mostrarSeccion();
+            botonesPaginador();
+
+        }); 
+
+    });
+}
+
+/**** DEFINIMOS EL PAGINADOR (SIGUIENTE-ANTERIOR) *****/
+function botonesPaginador(){
+    
+    const paginaAnterior = document.querySelector('#anterior');
+    const paginaSiguiente = document.querySelector('#siguiente');
+
+    if(paso === 1 ){ //Se posiciona en el primer Paso es decir(Servicios)
+        paginaAnterior.classList.add('ocultar');
+        paginaSiguiente.classList.remove('ocultar');
+
+    }else if(paso === 3){ //Se posiciona en el ultimo Paso es decir(Resumen)
+        paginaAnterior.classList.remove('ocultar');
+        paginaSiguiente.classList.add('ocultar');
+        mostrarResumen();
+        // console.log(cita);
+    }else{
+        paginaSiguiente.classList.remove('ocultar');
+        paginaAnterior.classList.remove('ocultar');
+    }
+
+}
+
+
+/**** BOTON QUE NOS MUEVE HACE LA PAGINA SIGUIENTE *****/
+function paginaSiguiente(){
+
+    const paginaSiguiente = document.querySelector('#siguiente');
+    paginaSiguiente.addEventListener('click',function(e){
+        if(paso >= pasoFinal) return;
+        paso = paso + 1;
+        botonesPaginador();
+        mostrarSeccion();
+
+    });
+}
+
+/**** BOTON QUE NOS MUEVE HACE LA PAGINA ANTERIOR *****/
+function paginaAnterior(){
+
+    const paginaAnterior = document.querySelector('#anterior');
+    paginaAnterior.addEventListener('click',function(e){
+        if(paso <= pasoInicial) return;
+        paso = paso - 1;
+        botonesPaginador();
+        mostrarSeccion();
+    });
+}
+
+/**** REQUERIMOS UNA API PARA CONSULTAR LOS SERVICIOS  *****/
+async function consultarAPI() {
+    try {
+        const url = `${location.origin}/api/servicios`;
+        const resultado = await fetch(url);
+        const servicios = await resultado.json();
+        mostrarServicios(servicios);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**** MOSTRAR LOS SERVICIOS UNA VEZ SE DE CLICK A ESE APARTADO  *****/
+function mostrarServicios(servicios){
+    //Servicios nos Trae un Arreglo por lo cual iteramos con ForEach
+
+    servicios.forEach((servicio) =>{
+        //Para obtener el valor de un arreglo en JavaScript utilizamos Destructuring - Separar
+        const {id,nombre,precio} = servicio;
+
+        //Parrafo con el Nombre
+        const nombreServicio = document.createElement('P'); //Creamos un parrafo dentro de nuestro Documento
+        nombreServicio.classList.add('nombre-servicio'); //A ese parrafo que ya creamos le agregamos una clase para darle estilos
+        nombreServicio.textContent = nombre;
+
+        //Parrafo con el Precio
+        const precioServicio = document.createElement('P');
+        precioServicio.classList.add('precio-servicio');
+        precioServicio.textContent = `$${precio}`;
+
+        //Div que contiene Nombre y Precio
+        const servicioDiv = document.createElement('DIV');
+        servicioDiv.classList.add('servicio');
+
+        servicioDiv.dataset.idServicio = id; //Creamos la el Identificador de cada servicio data-id-servicio = "";
+
+        servicioDiv.onclick = function(){ //Callback - Cada vez que le demos click a ese div se debe ejecutar una funcion de SeleccionarServicio
+
+            seleccionarServicio(servicio);
+        }; 
+
+        servicioDiv.appendChild(nombreServicio); //Dentro del div le colocamos el Nombre servicio
+        servicioDiv.appendChild(precioServicio); //Dentro del div le colocamos el Precio servicio
+
+        /** Mostramos en el Aparrado de Lista de Servicios ***/
+        document.querySelector('#servicios').appendChild(servicioDiv);
+
+    });
+}
+
+
+
+/**** OBTENER LA INFORMACION DEL SERVICIO AL QUE LE DAMOS CLICK  *****/
+function seleccionarServicio(servicio){
+
+    const{id} = servicio; //Destructuring a los elementos del servicio
+    const{servicios} = cita; //Obtenemos el Arreglo vacio Servicios de Cita 
+
+    //Identificar el Elemento al que se le da click
+    const divServicio_seleccionado = document.querySelector(`[data-id-servicio = "${servicio.id}"]`); //Nos ubicamos en el Div del Servicio Seleccionado
+    
+
+    //Comprobar si un servicio ya fue agregado /Es decir si tiene la clase 'seleccionado' si es asi quitarle esa clase
+    //.some nos permite buscar en un arreglo si un elemento existe 
+    if(servicios.some(servicio_agregado => servicio_agregado.id === servicio.id)){ //Por un lado tenemos los servicios que nos trae todos los que hemos dado click Y por otro lado servicio que es al que actualmente estamos dando click
+        //Ya esta arregado y le estas dando click
+        //Eliminamos del Arreglo de Cita
+        cita.servicios = servicios.filter(servicio_agregado => servicio_agregado.id != servicio.id); //.filter excluye un elemento del arreglo como lo hace crea un arreglo identico con todos los elementos que cumplan con una condicion
+        divServicio_seleccionado.classList.remove('seleccionado');
+    }else{
+        //Aun no se agrega este servicio //De esta forma evitamos el error de duplicar servicios ya agregados
+        //Agregarlo al Arreglo de Cita
+        cita.servicios = [...servicios, servicio]; //Hacemos una copia con el ... de servicios de la cita que esta vacio al servicio que tiene los Datos 
+        divServicio_seleccionado.classList.add('seleccionado'); //Agregamos una clase para Aplicar Estilos al Servicio que el Usuario Selecciono
+    }
+
+
+}
+
+
+/**** OBTENEMOS EL NOMBRE DEL CLIENTE Y LO AGREGAMOS AL OBJETO DE CITA  *****/
+function nombreCliente(){
+    const nombre = document.querySelector('#nombre').value;
+    cita.nombre = nombre;
+}
+
+
+/**** OBTENEMOS EL ID DEL CLIENTE Y LO AGREGAMOS AL OBJETO DE CITA  *****/
+function idCliente(){
+    const id = document.querySelector('#id').value;
+    cita.id = id;
+}
+
+/**** FUNCION QUE SE ENCARGA DE AGREGAR LA FECHA QUE ESCOGIO EL USUARIO AL OBJETO *****/
+function seleccionarFecha(){
+
+    const input_fecha = document.querySelector('#fecha'); //Seleccionamos la Fecha del HTML
+
+    input_fecha.addEventListener('input', function(e){ //A esa input fecha le agregamos que este a espera del ingreso de la fecha 
+
+        //Saber cuando es Sabado - Domingo dias en los que no se labora 
+        //e.target.value = La fecha que el Usuario selecciono
+
+        const dia = new Date(e.target.value).getUTCDay();  //Instanciamos el dia del Tipo Date() //getUTCDay nos trae las fechas en numeros es decir del 1 al 6 donde 1 es Lunes y 0 Domingo
+        
+        //Bloqueamos los dias sabado y domingo es decir 0 y 6
+        if( [6,0].includes(dia) ){ //includes nos permite saber si en el dia que escoja el usuario se encuentra o el 6 o el 0
+
+            e.target.value = ''; //Dejamos en vacio para indicar que dicha fecha no es valida 
+            mostrarAlerta('Fines de Semana NO Permitido','error','#paso-2 p');
+
+        }else{
+            //Selecciono un dia Correcto
+            cita.fecha = e.target.value; //Agregamos dentro de nuestro objeto de Cita La fecha que escogio el Usuario
+        }
+        
+    }); 
+}
+
+/**** OBTENEMOS LA HORA INGRESADA POR EL USUARIO *****/
+function seleccionarHora(){
+
+    const input_hora = document.querySelector('#hora');
+    input_hora.addEventListener('input', function(e){
+        
+        const hora_cita = e.target.value; //Hora ingresada por el Usuario
+        const hora_cita_split = hora_cita.split(':');
+        seleccion_only_hora_cita = parseInt(hora_cita_split[0]); //Selecciona solo la hora ya no los minutos
+
+        if((seleccion_only_hora_cita < 8 || seleccion_only_hora_cita > 18 )){
+   
+                e.target.value = '';
+                mostrarAlerta('Seleccionaste una Hora Incorrecta','error','#paso-2 p');
+        }else{
+            cita.hora = e.target.value;
+            // console.log(cita);
+        }
+     
+    });
+}
+
+
+/**** MOSTRAR ALERTAS *****/
+function mostrarAlerta(mensaje, tipo, ubicacion_elemento, desaparece = true){
+
+    const alerta_previa = document.querySelector('.alerta'); //Si ya existe una alerta
+    //Si alerta previa existe entonces retorna la funcion para no repetir la alerta
+    if(alerta_previa){
+       alerta_previa.remove();
+    }
+
+    const alerta = document.createElement('DIV'); //Vamos a crear un Nuevo Elemento Un DIV
+    alerta.textContent = mensaje;
+    alerta.classList.add('alerta');
+    alerta.classList.add(tipo);
+
+    //Seleccionamos Donde va a Ir nuestra Alerta que acabamos de Crear
+    const referencia = document.querySelector(ubicacion_elemento);
+    referencia.appendChild(alerta);
+
+    //Va hacer una Alerta Trnasitoria es decir va a Desaparecer
+    if(desaparece == true){
+        setTimeout(() => {
+            alerta.remove(); //Quitamos la Alerta ya que es solo informativa
+        }, 4000); //Dentro de 3s va a realizarse una accion
+    }
+ 
+}
+
+/**** MUESTRA EL RESUMEN FINAL DE LA CITA *****/
+function mostrarResumen(){
+
+    const resumen = document.querySelector('.contenido-resumen'); //Seleccionamos el Resumen de la Cita
+
+    const contenedorServicios = document.createElement('DIV');
+    contenedorServicios.classList.add('contenedor-servicios');
+
+    //Limpiar el Contenido del Resumen
+    while(resumen.firstChild){
+        resumen.removeChild(resumen.firstChild); //Si ya existe un contenido al principio lo remueves
+    }
+
+
+    //Verificacion cuando existen errores
+    if(Object.values(cita).includes('') || cita.servicios.length === 0){
+
+        mostrarAlerta('Existe un Error te Faltan Datos por Llenar','error','.contenido-resumen',false);
+        return; //Para detener la ejecucion para no tener un else y continuar abajo
+    }
+
+    //Verificacion cuando todo esta correcto
+    const {nombre, fecha, hora, servicios} = cita; //Aplicamos destructuring para obtener datos de la cita que deberia estar llena
+
+    //Heading para el Resumen de Servicios
+    const heading_cita = document.createElement('H3');
+    heading_cita.textContent = "Resumen de Cita";
+
+    const informacionCita = document.createElement('DIV');
+    informacionCita.classList.add('informacion-cita');
+
+    const nombreCliente = document.createElement('P');
+    nombreCliente.innerHTML = `<span>Nombre:</span> ${nombre}`;
+
+    //Formatear la Fecha en Español para el Usuario
+    const fechaObj = new Date(fecha); //Tenemos que transformar la fecha en formato string a objeto para acceder a los metodos de Date()
+
+    const mes = fechaObj.getMonth();
+    const dia = fechaObj.getDate() + 2; //Es +2 porque existe un desface por usar getDate es decir si es por ejm: 20 de mayo getDay() = 19 de mayo como se ocupa 2 veces en +2
+    const year = fechaObj.getFullYear();
+
+    const fechaUTC = new Date(Date.UTC(year,mes,dia)); //Le damos formato UTC para que funcione en cualquier lugar
+
+    const opciones = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}; //Para poder agregar la fecha en un Formato mas amigable de dia de la semana es decir si hoy es 20/5/2023 weekday:long nos trae el dia 'jueves'
+    const fechaFormateada = fechaUTC.toLocaleDateString('es-Mx',opciones); //Confierte de hora a string segun un formato local en este caso es-Mx es decir ejm: 20/5/2023
+
+
+    const fechaCliente = document.createElement('P');
+    fechaCliente.innerHTML = `<span>Fecha:</span> ${fechaFormateada}`;
+
+
+    const horaCliente = document.createElement('P');
+    horaCliente.innerHTML = `<span>Hora:</span> ${hora} Horas`;
+
+
+
+    //Heading para el Resumen de Servicios
+    const heading_servicios = document.createElement('H3');
+    heading_servicios.textContent = "Resumen de Servicios";
+
+
+
+
+    //Iterando y Mostrando los Servicios
+    servicios.forEach(servicio => {
+
+        const {id ,precio, nombre} = servicio;
+
+        const contenedor_servicio = document.createElement('DIV');
+        contenedor_servicio.classList.add('contenedor-servicio');
+
+        const nombreServicio = document.createElement('P');
+        nombreServicio.textContent = nombre;
+
+        const precioServicio = document.createElement('P');
+        precioServicio.innerHTML = `<span>Precio: </span> $${precio}`;
+
+        contenedor_servicio.appendChild(nombreServicio);
+        contenedor_servicio.appendChild(precioServicio);
+
+        contenedorServicios.appendChild(contenedor_servicio);
+    });
+
+  
+    //Boton para Crear una Cita 
+    const botonReservar = document.createElement('BUTTON');
+    botonReservar.classList.add('boton');
+    botonReservar.classList.add('btn-restablecer');
+    botonReservar.textContent = 'Reservar Cita';
+    botonReservar.onclick = reservarCita; //No le ponemos como metodo reservarCita() si queremos mandar datos debes ser por callback es decir function {reservarCita('datos')}
+
+    //Mostramos en la Vista
+    resumen.appendChild(heading_cita);
+    informacionCita.appendChild(nombreCliente);
+    informacionCita.appendChild(fechaCliente);
+    informacionCita.appendChild(horaCliente);
+    resumen.appendChild(informacionCita);
+    resumen.appendChild(heading_servicios);
+    resumen.appendChild(contenedorServicios);
+
+    resumen.appendChild(botonReservar);
+
+}
+
+//Conectamos con el Servidor por API y Fecth
+async function reservarCita() {
+    
+    const { nombre, fecha, hora, servicios, id } = cita;
+
+    const idServicios = servicios.map( servicio => servicio.id );
+    // console.log(idServicios);
+
+    const datos = new FormData();
+    
+    datos.append('fecha', fecha);
+    datos.append('hora', hora );
+    datos.append('usuarioId', id);
+    datos.append('servicios', idServicios);
+
+    // console.log([...datos]);
+
+    try {
+        // Petición hacia la api
+        const url = `${location.origin}/api/citas`;
+        const respuesta = await fetch(url, {
+            method: 'POST',
+            body: datos
+        });
+
+        const resultado = await respuesta.json();
+        console.log(resultado);
+        
+        if(resultado.resultado) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Cita Creada',
+                text: 'Tu cita fue creada correctamente',
+                button: 'OK'
+            }).then( () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            })
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al guardar la cita'
+        })
+    }
+
+    
+    // console.log([...datos]);
+
+}
+
