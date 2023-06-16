@@ -13,25 +13,31 @@ function s($html) : string {
     return $s;
 }
 
-//Funcion que verifica que la Cita este en el Final
-function esUltimo($actual, $proximo) : bool{
-    
-    if($actual != $proximo){ //Estamos en el ultimo elemento
+function esUltimo(string $actual, string $proximo): bool {
+    if($actual !== $proximo) {
         return true;
-    }else{
-        return false; //No estamos aun en el ultimo Elemento
     }
+    return false;
 }
 
-//Funcion que Revisa que el usuario se encuentre Autenticado
-function isAuth() : void{
-    if(!isset($_SESSION['login'])){ //Si no esta definida la Sesion significa que no tiene acceso
+// Función que revisa que el usuario este autenticado
+
+function isAuth() : void {
+    if(!isset($_SESSION)) {
+        session_start();
+    } elseif(!isset($_SESSION['login'])) {
         header('Location: /');
     }
 }
 
-function isAdmin() : void{
-    if(!isset($_SESSION['admin'])){
+function isAdmin() : void {
+    if(!isset($_SESSION['admin'])) {
         header('Location: /');
+    }
+}
+
+function isSession() : void {
+    if(!isset($_SESSION)) {
+        session_start();
     }
 }
