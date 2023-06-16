@@ -53,13 +53,17 @@ class APIController{
         //     'resultado' => $resultado //Accedemos en el servidor al valor de los servicios 
         // ];
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $respuesta = [
-            'datos' => $_POST
-        ];
 
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        }
+        debuguear($_POST);
+
+        // if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // $respuesta = [
+        //     'datos' => $_POST
+        // ];
+
+        
+        // echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        // }
     
     }
 
