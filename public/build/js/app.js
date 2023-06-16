@@ -413,7 +413,7 @@ function mostrarResumen(){
 //Conectamos con el Servidor por API y Fecth
 async function reservarCita() {
     
-    const { nombre, fecha, hora, servicios, id } = cita;
+    const { nombre, fecha, hora, servicios, id} = cita;
 
     const idServicios = servicios.map( servicio => servicio.id );
     // console.log(idServicios);
@@ -421,7 +421,7 @@ async function reservarCita() {
     const datos = new FormData();
     
     datos.append('fecha', fecha);
-    datos.append('hora', hora );
+    datos.append('hora', hora);
     datos.append('usuarioId', id);
     datos.append('servicios', idServicios);
 
@@ -450,6 +450,7 @@ async function reservarCita() {
                 }, 3000);
             })
         }
+
     } catch (error) {
         console.log(error);
         Swal.fire({

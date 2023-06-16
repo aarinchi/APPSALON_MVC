@@ -32,7 +32,7 @@ class APIController{
         //Almacena la Cita y el Servicio en la Tabla CitaServicios
 
         $servicios = $_POST['servicios'];
-        debuguear($servicios);
+        
         $idServicios = explode(",", $servicios); //Separamos los servicios que nos trajimos del API que esta en String a Arreglo
 
         //Almacena los Servicios Con el Id de la Cita
@@ -52,7 +52,7 @@ class APIController{
         ];
 
 
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        echo json_encode($respuesta);
     
     }
 
