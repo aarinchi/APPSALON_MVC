@@ -2,12 +2,11 @@
 namespace Model;
 class ActiveRecord {
 
-    //Base de Datos
-    protected static $db; //Es static solo puede ser accedido por la clase no por la instancia 
-    protected static $columnasDB = []; //Hacemos referencia los datos que vamos a sanitizar a traves de la Programacion Orientada a Objetos
-    protected static $tabla = ''; //Es para heredar la Clase Principal utlizar los mismos metodos e identificar por cada clase (propiedad,vendedores)
- 
-    //Variables
+    // Base DE DATOS
+    protected static $db;
+    protected static $tabla = '';
+    protected static $columnasDB = [];
+
     public $id;
 
     // Alertas y Mensajes
@@ -32,6 +31,23 @@ class ActiveRecord {
         return static::$alertas;
     }
 
+    // Consulta SQL para crear un objeto en Memoria
+    public static function consultarSQL($query) {
+        // Consultar la base de datos
+        $resultado = self::$db->query($query);
+
+        // Iterar los resultados
+        $array = [];
+        while($registro = $resultado->fetch_assoc()) {
+            $array[] = static::crearObjeto($registro);
+        }
+
+        // liberar la memoria
+        $resultado->free();
+
+        // retornar los resultados
+        return $array;
+    }
 
     // Crea el objeto en memoria que es igual al de la BD
     protected static function crearObjeto($registro) {
@@ -48,7 +64,6 @@ class ActiveRecord {
 
     // Identificar y unir los atributos de la BD
     public function atributos() {
-        
         $atributos = [];
         foreach(static::$columnasDB as $columna) {
             if($columna === 'id') continue;
@@ -57,18 +72,13 @@ class ActiveRecord {
         return $atributos;
     }
 
-
-    //Metodo que Sanitiza los valores del Objeto
-    public function sanitizarAtributos(){ //Se va a encargar de sanitizar los atributos
-
+    // Sanitizar los datos antes de guardarlos en la BD
+    public function sanitizarAtributos() {
         $atributos = $this->atributos();
         $sanitizado = [];
-
-
-        foreach ($atributos as $llaves => $contenido) { //De esta forma recorremos un arreglo asociativo y obtenemos tanto la propiedad como su valor 
-            $sanitizado[$llaves] = self::$db->escape_string($contenido);
+        foreach($atributos as $key => $value ) {
+            $sanitizado[$key] = self::$db->escape_string($value);
         }
-
         return $sanitizado;
     }
 
@@ -83,9 +93,7 @@ class ActiveRecord {
 
     // Registros - CRUD
     public function guardar() {
-
         $resultado = '';
-        
         if(!is_null($this->id)) {
             // actualizar
             $resultado = $this->actualizar();
@@ -94,26 +102,6 @@ class ActiveRecord {
             $resultado = $this->crear();
         }
         return $resultado;
-
-    }
-
-
-    // Consulta SQL para crear un objeto en Memoria
-    public static function consultarSQL($query) {
-        // Consultar la base de datos
-        $resultado = self::$db->query($query);
-    
-        // Iterar los resultados
-        $array = [];
-        while($registro = $resultado->fetch_assoc()) {
-            $array[] = static::crearObjeto($registro);
-        }
-    
-        // liberar la memoria
-        $resultado->free();
-    
-        // retornar los resultados
-        return $array;
     }
 
     // Todos los registros
@@ -125,39 +113,33 @@ class ActiveRecord {
 
     // Busca un registro por su id
     public static function find($id) {
-        $query = "SELECT * FROM " . static::$tabla  ." WHERE id = $id";
+        $query = "SELECT * FROM " . static::$tabla  ." WHERE id = {$id}";
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
 
-
-    // Obtener Registros con cierta cantidad
-    public static function get($limite) {
-
-        $query = "SELECT * FROM " . static::$tabla . " LIMIT $limite";
+    // Busca un registro por su id
+    public static function where($columna, $valor) {
+        $query = "SELECT * FROM " . static::$tabla  ." WHERE {$columna} = '{$valor}'";
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
 
-    //Busca por un elemento en Concreto de la BD
-    public static function find_specific($columna, $valor) {
-        
-        $query = "SELECT * FROM " . static::$tabla  ." WHERE $columna = '$valor'";
-        $resultado = self::consultarSQL($query);
-        return array_shift( $resultado ) ;
-    }
-
-    //Consulta Plana de SQL (Utilizar cuando los metodos del modelo no son suficientes)
-    public static function SQL_Plano($query) {
- 
+    // Consulta Plana de SQL (Utilizar cuando los métodos del modelo no son suficientes)
+    public static function SQL($query) {
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
 
+    // Obtener Registros con cierta cantidad
+    public static function get($limite) {
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT {$limite}";
+        $resultado = self::consultarSQL($query);
+        return array_shift( $resultado ) ;
+    }
 
     // crea un nuevo registro
     public function crear() {
-
         // Sanitizar los datos
         $atributos = $this->sanitizarAtributos();
 
@@ -168,39 +150,33 @@ class ActiveRecord {
         $query .= join("', '", array_values($atributos));
         $query .= "') ";
 
-        // return json_encode(['query' => $query]); //Retornamos el resultado de nuestra consulta para podeer Determinar Posibles Errores
-
+        //return json_encode(['query' => $query]);
         // Resultado de la consulta
-        $resultado = self::$db->query($query); //Retorna True o False
-
-        
+        $resultado = self::$db->query($query);
         return [
-           'query' => $query,
            'resultado' =>  $resultado,
            'id' => self::$db->insert_id
         ];
     }
 
-    //Metodo Actualizar
-    public function actualizar(){
+    // Actualizar el registro
+    public function actualizar() {
+        // Sanitizar los datos
+        $atributos = $this->sanitizarAtributos();
 
-        //Sanitizar los Datos
-        $atributos = $this->sanitizarAtributos(); //Arreglo con los Datos del Objeto Sanitizados
-
+        // Iterar para ir agregando cada campo de la BD
         $valores = [];
-
-
-        foreach ($atributos as $key => $valor) {
-            $valores[] = "{$key}='{$valor}'";
+        foreach($atributos as $key => $value) {
+            $valores[] = "{$key}='{$value}'";
         }
 
-        $valores_string = join(', ', $valores);
-
-        $query = "UPDATE " . static::$tabla  . " SET ";
-        $query .=  $valores_string;
+        // Consulta SQL
+        $query = "UPDATE " . static::$tabla ." SET ";
+        $query .=  join(', ', $valores );
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
-        $query .= " LIMIT 1";
+        $query .= " LIMIT 1 "; 
 
+        // Actualizar BD
         $resultado = self::$db->query($query);
         return $resultado;
     }
@@ -211,5 +187,5 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         return $resultado;
     }
-    
+
 }
