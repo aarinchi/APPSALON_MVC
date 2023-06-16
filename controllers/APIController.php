@@ -34,7 +34,7 @@ class APIController{
 
         $idServicios = explode(",", $_POST['servicioId']);
 
-        var_dump($_POST['servicioId']);
+        debuguear($idServicios);
 
         foreach($idServicios as $idServicio) {
 
@@ -49,7 +49,7 @@ class APIController{
           
         }
 
-        echo json_encode(['resultado' => $resultado]);
+        echo json_encode(['resultado' => $resultado],JSON_UNESCAPED_UNICODE);
         }
     }
 
