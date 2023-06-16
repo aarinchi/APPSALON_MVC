@@ -6,7 +6,7 @@ class Cita extends ActiveRecord{
 
     //Base de Datos     
     protected static $tabla = 'citas';
-    protected static $columnasDB = ['id', 'fecha', 'hora', 'usuarioId'];
+    protected static $columnasDB = ['id','fecha','hora','usuarioId'];
 
     public $id;
     public $fecha;
@@ -21,7 +21,5 @@ class Cita extends ActiveRecord{
         $this->usuarioId = $args['usuarioId'] ?? '';
         
     }
-
-
 
 }

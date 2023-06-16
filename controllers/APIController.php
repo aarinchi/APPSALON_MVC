@@ -52,7 +52,7 @@ class APIController{
             'servicios' => $resultado
         ];
 
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     }
 
     // "api/eliminar"
