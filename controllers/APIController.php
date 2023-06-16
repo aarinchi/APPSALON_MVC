@@ -22,38 +22,41 @@ class APIController{
     //Guardamos los Datos del Usuario de JavaScript a PHP mediante API http://127.0.0.1:3000/api/citas
     public static function guardar(){
         
-        //Almacena la Cita y devuelve el Id
-        $cita = new Cita($_POST);
+        // //Almacena la Cita y devuelve el Id
+        // $cita = new Cita($_POST);
 
-        // debuguear($cita);
+        // // debuguear($cita);
         
-        $resultado = $cita->guardar(); //Este resultado tiene el Id de la Cita 
+        // $resultado = $cita->guardar(); //Este resultado tiene el Id de la Cita 
 
-        $id = $resultado['id']; //Obtenemos el Id de la Cita 
+        // $id = $resultado['id']; //Obtenemos el Id de la Cita 
 
-        //Almacena la Cita y el Servicio en la Tabla CitaServicios
+        // //Almacena la Cita y el Servicio en la Tabla CitaServicios
 
-        $servicios = $_POST['servicios'];
+        // $servicios = $_POST['servicios'];
         
-        $idServicios = explode(",", $servicios); //Separamos los servicios que nos trajimos del API que esta en String a Arreglo
+        // $idServicios = explode(",", $servicios); //Separamos los servicios que nos trajimos del API que esta en String a Arreglo
 
-        //Almacena los Servicios Con el Id de la Cita
-        foreach($idServicios as $idServicio){ //Para no cometer un error en normalizacion creamos por cada servicio de la cita una columna nueva es decir si tiene 1,2,3 servicios son 3 columnas en la BD
-            $args = [
-                'citaId' => $id,
-                'serviciosId' => $idServicio
-            ];
+        // //Almacena los Servicios Con el Id de la Cita
+        // foreach($idServicios as $idServicio){ //Para no cometer un error en normalizacion creamos por cada servicio de la cita una columna nueva es decir si tiene 1,2,3 servicios son 3 columnas en la BD
+        //     $args = [
+        //         'citaId' => $id,
+        //         'serviciosId' => $idServicio
+        //     ];
 
-            $citaServicio = new CitaServicio($args);
-            $citaServicio->guardar();
-        }
+        //     $citaServicio = new CitaServicio($args);
+        //     $citaServicio->guardar();
+        // }
 
-        //Retornamos una Respuesta en Nuestra API
+        // //Retornamos una Respuesta en Nuestra API
+        // $respuesta = [
+        //     'resultado' => $resultado //Accedemos en el servidor al valor de los servicios 
+        // ];
+
         $respuesta = [
-            'resultado' => $resultado //Accedemos en el servidor al valor de los servicios 
+            'datos' => $_POST
         ];
-
-
+        
         echo json_encode($respuesta);
     
     }
