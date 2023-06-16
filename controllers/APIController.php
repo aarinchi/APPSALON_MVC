@@ -22,20 +22,22 @@ class APIController{
     //Guardamos los Datos del Usuario de JavaScript a PHP mediante API http://127.0.0.1:3000/api/citas
     public static function guardar() {
       
-        // Almacena la cita y devuelve el id
-        $cita = new Cita();
+        debuguear($_POST);
 
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $cita->sincronizar($_POST);
-            $resultado = $cita->guardar();
+        // // Almacena la cita y devuelve el id
+        // $cita = new Cita();
+
+        // if($_SERVER["REQUEST_METHOD"] == "POST"){
+        //     $cita->sincronizar($_POST);
+        //     $resultado = $cita->guardar();
 
 
-              $respuesta = [
-            'servicios' => $resultado
-            ];
+        //       $respuesta = [
+        //     'servicios' => $resultado
+        //     ];
 
-            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        }
+        //     echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        // }
         
         
         
