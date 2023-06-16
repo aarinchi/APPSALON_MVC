@@ -2,4 +2,5 @@ src/
 vendor/
 gulpfile.js
 .env
+node_modules/
 
