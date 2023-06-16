@@ -24,6 +24,7 @@ class APIController{
         
         //Almacena la Cita y devuelve el Id
         $cita = new Cita($_POST);
+        
         $resultado = $cita->guardar(); //Este resultado tiene el Id de la Cita 
 
         $id = $resultado['id']; //Obtenemos el Id de la Cita 
@@ -31,7 +32,7 @@ class APIController{
         //Almacena la Cita y el Servicio en la Tabla CitaServicios
 
         $servicios = $_POST['servicios'];
-
+        debuguear($servicios);
         $idServicios = explode(",", $servicios); //Separamos los servicios que nos trajimos del API que esta en String a Arreglo
 
         //Almacena los Servicios Con el Id de la Cita
