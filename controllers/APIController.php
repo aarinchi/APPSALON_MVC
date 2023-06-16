@@ -25,7 +25,7 @@ class APIController{
         //Almacena la Cita y devuelve el Id
         $cita = new Cita($_POST);
 
-        debuguear($cita);
+        // debuguear($cita);
         
         $resultado = $cita->guardar(); //Este resultado tiene el Id de la Cita 
 
