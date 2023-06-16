@@ -21,42 +21,38 @@ class APIController{
 
     //Guardamos los Datos del Usuario de JavaScript a PHP mediante API http://127.0.0.1:3000/api/citas
     public static function guardar() {
-        $servicios = Servicio::all();
-
-        echo json_encode($servicios, JSON_UNESCAPED_UNICODE); //Mostramos en la URL /api/servicios los servicios como archivo .json
       
-        // // Almacena la cita y devuelve el id
-        // $cita = new Cita($_POST);
+        // Almacena la cita y devuelve el id
+        $cita = new Cita($_POST);
         
-        // $resultado = $cita->guardar();
-        // $id = $resultado['id'];
+        $resultado = $cita->guardar();
+        $id = $resultado['id'];
 
 
-        // // Almacen la cita y el servicio
+        // Almacen la cita y el servicio
 
-        // $idServicios = explode(",", $_POST['servicioId']);
+        $idServicios = explode(",", $_POST['servicioId']);
 
-        // echo($idServicios);
 
-        // foreach($idServicios as $idServicio) {
+        foreach($idServicios as $idServicio) {
 
-        //     $args = [
-        //         'citaId' => $id,
-        //         'servicioId' => $idServicio
-        //     ];
+            $args = [
+                'citaId' => $id,
+                'servicioId' => $idServicio
+            ];
 
-        //     $citaServicio = new CitaServicio($args);
+            $citaServicio = new CitaServicio($args);
             
-        //     $citaServicio->guardar();
+            $citaServicio->guardar();
           
-        // }
+        }
 
-        // // Retornamos una respuesta
-        // $respuesta = [
-        //     'servicios' => $resultado
-        // ];
+        // Retornamos una respuesta
+        $respuesta = [
+            'servicios' => $resultado
+        ];
 
-        // echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
     }
 
     // "api/eliminar"
