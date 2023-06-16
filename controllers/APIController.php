@@ -54,16 +54,15 @@ class APIController{
         // ];
 
 
-        debuguear($_POST);
-
-        // if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        // $respuesta = [
-        //     'datos' => $_POST
-        // ];
+        $cita = new Cita($_POST);
+ 
+        $respuesta = [
+            'cita' => $cita
+        ];
 
         
-        // echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        // }
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        
     
     }
 

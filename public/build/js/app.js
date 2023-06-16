@@ -428,7 +428,7 @@ async function reservarCita() {
 
     try {
         // Petición hacia la api
-        const url = `${location.origin}/api/citas`;
+        const url = `https://aaron-lescano-ejercicio.herokuapp.com/api/citas`;
 
         
 
