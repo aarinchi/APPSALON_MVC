@@ -26,26 +26,26 @@ class APIController{
         $cita = new Cita($_POST);
         
         $resultado = $cita->guardar();
-        $id = $resultado['id'];
+        // $id = $resultado['id'];
 
 
-        // Almacen la cita y el servicio
+        // // Almacen la cita y el servicio
 
-        $idServicios = explode(",", $_POST['servicioId']);
+        // $idServicios = explode(",", $_POST['servicioId']);
 
 
-        foreach($idServicios as $idServicio) {
+        // foreach($idServicios as $idServicio) {
 
-            $args = [
-                'citaId' => $id,
-                'servicioId' => $idServicio
-            ];
+        //     $args = [
+        //         'citaId' => $id,
+        //         'servicioId' => $idServicio
+        //     ];
 
-            $citaServicio = new CitaServicio($args);
+        //     $citaServicio = new CitaServicio($args);
             
-            $citaServicio->guardar();
+        //     $citaServicio->guardar();
           
-        }
+        // }
 
         // Retornamos una respuesta
         $respuesta = [
