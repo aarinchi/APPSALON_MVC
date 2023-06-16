@@ -21,7 +21,9 @@ class APIController{
 
     //Guardamos los Datos del Usuario de JavaScript a PHP mediante API http://127.0.0.1:3000/api/citas
     public static function guardar() {
-        echo json_encode('Funciono');
+        $servicios = Servicio::all();
+
+        echo json_encode($servicios, JSON_UNESCAPED_UNICODE); //Mostramos en la URL /api/servicios los servicios como archivo .json
       
         // // Almacena la cita y devuelve el id
         // $cita = new Cita($_POST);
