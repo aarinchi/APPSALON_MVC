@@ -24,9 +24,21 @@ class APIController{
       
         // Almacena la cita y devuelve el id
         $cita = new Cita();
-        $cita->sincronizar($_POST);
+
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $cita->sincronizar($_POST);
+            $resultado = $cita->guardar();
+
+
+              $respuesta = [
+            'servicios' => $resultado
+            ];
+
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        }
         
-        $resultado = $cita->guardar();
+        
+        
         // $id = $resultado['id'];
 
 
@@ -49,11 +61,7 @@ class APIController{
         // }
 
         // Retornamos una respuesta
-        $respuesta = [
-            'servicios' => $resultado
-        ];
-
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+      
     }
 
     // "api/eliminar"
