@@ -27,7 +27,6 @@ class APIController{
 
         $resultado = $cita->guardar();
 
-        echo json_encode($resultado);
         
         $id = $resultado['id'];
 
