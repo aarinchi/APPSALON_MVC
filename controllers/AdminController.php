@@ -39,7 +39,7 @@ class AdminController{
         $consulta .= " WHERE fecha =  '$fecha' ";
 
         //Realiza la Consulta a la BD y nos trae el Resultado (Todas las Citas que Tenemos en la BD)
-        $citas = AdminCita::SQL_Plano($consulta); //Consulta Plana
+        $citas = AdminCita::SQL($consulta); //Consulta Plana
 
 
         $router->render('admin/index', [
