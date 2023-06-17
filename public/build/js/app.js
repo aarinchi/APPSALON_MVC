@@ -437,8 +437,7 @@ async function reservarCita() {
 
         const resultado = await respuesta.json();
         
-        console.log(resultado);
-        return;
+    
         if(resultado.resultado) {
             Swal.fire({
                 icon: 'success',
