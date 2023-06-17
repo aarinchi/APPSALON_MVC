@@ -32,7 +32,7 @@ class APIController{
 
         // Almacen la cita y el servicio
 
-        $idServicios = explode(",", intval($_POST['servicios'])) ;
+        $idServicios = explode(",", $_POST['servicios']);
 
         
 

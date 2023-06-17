@@ -10,12 +10,12 @@ class CitaServicio extends ActiveRecord{
 
     public $id;
     public $citaId;
-    public $serviciosId;
+    public $servicioId;
 
     public function __construct($args = []){
         $this->id = $args['id']  ?? null;
         $this->citaId = $args['citaId'] ?? '';
-        $this->serviciosId = $args['servicioId'] ?? '';
+        $this->servicioId = $args['servicioId'] ?? '';
     }
 
 }
