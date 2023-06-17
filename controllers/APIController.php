@@ -39,22 +39,19 @@ class APIController{
         foreach($idServicios as $idServicio) {
             $args = [
                 'citaId' => $id,
-                'servicioId' => intval($idServicio) 
+                'servicioId' => $idServicio
             ];
             
             
             $citaServicio = new CitaServicio($args);
-    
+            echo json_encode($citaServicio);
             $citaServicio->guardar();
         }
-
         // Retornamos una respuesta
         $respuesta = [
             'servicios' => $resultado
         ];
-
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        exit;
     }
 
     
