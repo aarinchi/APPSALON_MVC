@@ -39,13 +39,12 @@ class APIController{
         foreach($idServicios as $idServicio) {
             $args = [
                 'citaId' => $id,
-                'servicioId' => intval($idServicio) 
+                'servicioId' => $idServicio
             ];
-            
+            echo json_encode($args);
             
             $citaServicio = new CitaServicio($args);
-            debuguear($citaServicio);
-
+            
             $citaServicio->guardar();
         }
         // Retornamos una respuesta
