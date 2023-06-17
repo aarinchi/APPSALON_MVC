@@ -44,8 +44,8 @@ class APIController{
             
             
             $citaServicio = new CitaServicio($args);
-            echo json_encode($citaServicio);
-            exit;
+            debuguear($citaServicio);
+
             $citaServicio->guardar();
         }
         // Retornamos una respuesta
