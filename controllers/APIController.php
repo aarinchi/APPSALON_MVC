@@ -47,10 +47,7 @@ class APIController{
             $citaServicio->guardar();
         }
         // Retornamos una respuesta
-        $respuesta = [
-            'servicios' => $resultado
-        ];
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        echo json_encode(['resultado' => $resultado]);
     }
 
     
