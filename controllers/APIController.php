@@ -51,7 +51,6 @@ class APIController{
             'servicios' => $resultado
         ];
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        return;
     }
 
     
