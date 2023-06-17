@@ -39,7 +39,7 @@ class APIController{
         foreach($idServicios as $idServicio) {
             $args = [
                 'citaId' => $id,
-                'servicioId' => $idServicio
+                'servicioId' => intval($idServicio) 
             ];
             
             
