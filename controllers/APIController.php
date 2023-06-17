@@ -27,7 +27,8 @@ class APIController{
 
         $resultado = $cita->guardar();
 
-        debuguear($resultado);
+        var_dump($resultado);
+        return;
         $id = $resultado['id'];
 
         // Almacen la cita y el servicio

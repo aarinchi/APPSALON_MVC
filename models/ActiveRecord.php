@@ -93,6 +93,7 @@ class ActiveRecord {
 
     // Registros - CRUD
     public function guardar() {
+
         $resultado = '';
         if(!is_null($this->id)) {
             // actualizar
@@ -102,6 +103,7 @@ class ActiveRecord {
             $resultado = $this->crear();
         }
         return $resultado;
+        
     }
 
     // Todos los registros
