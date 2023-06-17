@@ -41,10 +41,10 @@ class APIController{
                 'citaId' => $id,
                 'servicioId' => $idServicio
             ];
-            echo json_encode($args);
+            
             
             $citaServicio = new CitaServicio($args);
-            
+            echo json_encode($citaServicio);
             $citaServicio->guardar();
         }
         // Retornamos una respuesta
