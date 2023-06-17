@@ -2,7 +2,6 @@ src/
 vendor/
 gulpfile.js
 .env
-
 vendor
 src
 gulpfile.js
