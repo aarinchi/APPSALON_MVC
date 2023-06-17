@@ -42,6 +42,7 @@ class APIController{
                 'servicioId' => intval($idServicio) 
             ];
             echo json_encode($idServicios);
+            return;
             
             $citaServicio = new CitaServicio($args);
             
