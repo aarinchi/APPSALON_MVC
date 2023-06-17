@@ -34,14 +34,15 @@ class APIController{
 
         $idServicios = explode(",", $_POST['servicios']);
 
-        echo json_encode($idServicios);
+        
 
         foreach($idServicios as $idServicio) {
             $args = [
                 'citaId' => $id,
                 'servicioId' => $idServicio
             ];
-
+            echo json_encode($args);
+            
             $citaServicio = new CitaServicio($args);
             
             $citaServicio->guardar();
