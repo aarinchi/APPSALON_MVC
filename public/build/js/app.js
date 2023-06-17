@@ -435,10 +435,9 @@ async function reservarCita() {
         });
 
         const resultado = await respuesta.json();
-
+        console.log(resultado);
         
         if(resultado.resultado) {
-            console.log("exito");
             Swal.fire({
                 icon: 'success',
                 title: 'Cita Creada',
@@ -451,14 +450,14 @@ async function reservarCita() {
             })
         }
     } catch (error) {
-        console.log(error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
             text: 'Hubo un error al guardar la cita'
         })
     }
-  
+
+    
     // console.log([...datos]);
 
 }
