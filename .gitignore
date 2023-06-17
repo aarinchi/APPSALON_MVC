@@ -4,3 +4,7 @@ gulpfile.js
 .env
 
 
+node_modules/
+vendor
+src
+gulpfile.js
