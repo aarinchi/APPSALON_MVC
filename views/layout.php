@@ -6,6 +6,7 @@
     <title>App Salón</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700;900&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="/build/css/app.css">
+    <script type="text/javascript">(function () { var ldk = document.createElement('script'); ldk.type = 'text/javascript'; ldk.async = true; ldk.src = 'https://s.cliengo.com/weboptimizer/648ea2d16aa6f900320d2188/648ea2d36aa6f900320d218b.js?platform=dashboard'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ldk, s); })(); </script>
 </head>
 
 <body>
